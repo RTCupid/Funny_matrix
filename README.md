@@ -29,10 +29,9 @@ Expression  ::= Equality
 Equality    ::= Rel ( ( '==' | '!=' ) Rel )*
 Rel         ::= AddSub ( ( '<' | '>' | '<=' | '>=' ) AddSub )*
 AddSub      ::= Primary ( ( '+' | '-' ) Primary )*
-Primary     ::= '(' Expression ')'| Var | Number | FuncCall
+Primary     ::= '(' Expression ')'| Var | Number
 
-Var         ::= ID
-ID          ::= ([a-z] | [A-Z])+
+Var         ::= ([a-z] | [A-Z])+
 Num         ::= ['0'-'9']+
 ```
 
