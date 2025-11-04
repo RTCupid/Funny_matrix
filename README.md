@@ -15,17 +15,15 @@ Below is a description of the grammar of the language in a format close to EBNF 
 Program     ::= StmtList 
 StmtList    ::= Statement ';' 
 
-Statement   ::= Assignment | IfStmt  | WhileStmt | 
-                VarDef     | Input   | Print
+Statement   ::= Assignment | IfStmt  | WhileStmt |  Input   | Print
 
 IfStmt      ::= 'if'    '(' Expression ')' '{' StmtList '}'
 WhileStmt   ::= 'while' '(' Expression ')' '{' StmtList '}'
 
 Assignment  ::= Var '=' Expression
-VarDef      ::= Var '=' Expression 
 
-Input       ::= 'pozhertvui' 'radi' Var
-Print       ::= 'glagoli' 'yasno' Expression
+Input       ::= Var '=' '?'
+Print       ::= 'print' Expression
 
 Expression  ::= Equality
 Equality    ::= Rel ( ( '==' | '!=' ) Rel )*
