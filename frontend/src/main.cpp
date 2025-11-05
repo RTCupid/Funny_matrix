@@ -18,6 +18,9 @@ int main() {
     Lexer lexer(std::move(source));
     lexer.print_source();
 
+    lexer.tokenize();
+    lexer.print_tokens();
+
     std::cout << "Я работаю\n";
 
 }

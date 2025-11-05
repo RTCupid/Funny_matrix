@@ -1,3 +1,1 @@
-#include biba_boba_library
-print "hello, world\n"
-ret 0
+   (= 

@@ -6,6 +6,7 @@
 #include <string>
 #include "token.hpp"
 #include "common.hpp"
+#include "lexem_tables.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -43,8 +44,14 @@ public:
     [[nodiscard]] const std::vector<std::unique_ptr<Token>>& 
     get_tokens() const noexcept { return tokens_; }
 
-    void print_source() const {              // for debug
+    void print_source() const {              //NOTE for debug
         std::cout << source_ << std::endl;
+    }
+
+    void print_tokens() const  {             //NOTE for debug
+        for (std::size_t i = 0; i < tokens_.size(); ++i) {
+            std::cout << static_cast<std::size_t>(tokens_[i].get()->type_) << '\n';
+        }
     }
 
     void tokenize();
@@ -52,10 +59,22 @@ public:
 private:
 
     void skip_spaces();
+    
     void check_primitive_tokens();
-    void inc() noexcept {++i_;}
-
 };
+
+/*—————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+/*                                                                                                                 */
+/*——————————————————————————————————————————| implementation of functions |————————————————————————————————————————*/
+/*                                                                                                                 */
+/*—————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+template<class Tok, class Enum>
+void emit_(std::vector<std::unique_ptr<Token>>& tokens, Enum e, size_t& i) {
+    tokens.push_back(std::make_unique<Tok>(e));
+    ++i;
+}
+
 
 /*—————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 /*                                                                                                                 */
@@ -64,34 +83,44 @@ private:
 /*—————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 inline void Lexer::skip_spaces() {
-    char c = source_[i_];
-    while (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
-        inc();
-        c = source_[i_];
+    while (i_ < source_.size()) {
+        char c = source_[i_];
+        if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+            ++i_;
+        } else {
+            break;
+        }
     }
 }
 
 inline void Lexer::check_primitive_tokens() {
-    char c = source_[i_];
-    switch (c)
-    {
-    case '+': {
-        tokens_.push_back(std::make_unique<Token_binary_operator>(Binary_operators::operator_add));
-        inc();
+    skip_spaces();
+    const char c = source_[i_];
+    
+    switch (kKind[c]) {
+    case KBinop: {
+        emit_<Token_binary_operator>(tokens_,
+            static_cast<Binary_operators>(kVal[c]), i_);
+        break;
+    }
+    case KIdent: {
+        emit_<Token_identifier>(tokens_,
+            static_cast<Identifiers>(kVal[c]), i_);
         break;
     }
     default:
-        break;
+        break; 
     }
 }
 
 
 inline void Lexer::tokenize() {
-    const std::size_t n = tokens_.size();
+    const std::size_t n = source_.size();
+    std::cout << "n = " << n << '\n'; // FIXME debug cout
 
     while(i_ < n) {
-        skip_spaces();
-
+        check_primitive_tokens();
+        //TODO check not primitive_tokens;
 
     }
 }
