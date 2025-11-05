@@ -3,39 +3,81 @@
 
 #include "node.hpp"
 #include "token.hpp"
-#include <vector>
 #include <memory>
+#include <vector>
+#include <stdexcept>
 
 namespace language {
 
+// Program     ::= StmtList
+// StmtList    ::= Statement ';'
+//
+// Statement   ::= Assignment | IfStmt  | WhileStmt |  Input   | Print
+//
+// IfStmt      ::= 'if'    '(' Expression ')' '{' StmtList '}'
+// WhileStmt   ::= 'while' '(' Expression ')' '{' StmtList '}'
+//
+// Assignment  ::= Var '=' Expression
+//
+// Input       ::= Var '=' '?'
+// Print       ::= 'print' Expression
+//
+// Expression  ::= Equality
+// Equality    ::= Rel ( ( '==' | '!=' ) Rel )*
+// Rel         ::= AddSub ( ( '<' | '>' | '<=' | '>=' ) AddSub )*
+// AddSub      ::= Primary ( ( '+' | '-' ) Primary )*
+// Primary     ::= '(' Expression ')'| Var | Number
+//
+// Var         ::= ([a-z] | [A-Z])+
+// Num         ::= ['0'-'9']+
+
 class Parser {
     std::size_t pc_ = 0;
-    std::unique_ptr<Node> root{nullptr};
+    std::unique_ptr<Node> root_{nullptr};
 
-public:
-    Parser () = default;
+  public:
+    Parser() = default;
 
+    bool parse(const std::vector<std::unique_ptr<Token>> &tokens);
 
-    bool parse(const std::vector<std::unique_ptr<Token>>& tokens_);
-
-private:
-    Node* get_operator() {
-
-    }
-
+  private:
+    std::unique_ptr<Node> get_operator(const std::vector<std::unique_ptr<Token>> &tokens);
 };
 
-inline bool Parser::parse(const std::vector<std::unique_ptr<Token>> &tokens_) {
-    auto node = new Statement_node{get_operator(), new Statement_node};
+inline bool Parser::parse(const std::vector<std::unique_ptr<Token>> &tokens) {
+    auto root_ = std::make_unique<Statement_node>();
 
-    auto current_node = node->right_;
+    root_->set_left(get_operator(tokens));
+    root_->set_right(std::make_unique<Statement_node>());
 
-    while (true) {
-
-
+    auto current_node = static_cast<Statement_node*>(root_->right_.get());
+    if (!current_node) {
+        throw std::runtime_error("Expected Statement_node");
     }
 
-    return node;
+    while (pc_ < tokens.size()) {
+        current_node->set_left(get_operator(tokens));
+        current_node->set_right(std::make_unique<Statement_node>());
+        current_node = static_cast<Statement_node*>(current_node->right_.get());
+    }
+
+    return true;
+}
+
+inline std::unique_ptr<Node> Parser::get_operator(const std::vector<std::unique_ptr<Token>> &tokens) {
+    if (tokens[pc_]->type_ == Type::type_variable) {
+        ++pc_;
+        if (tokens[pc_]->type_ == Type::type_binary_operator) {
+            auto* binary_op = dynamic_cast<Token_binary_operator*>(tokens[pc_].get());
+            if (!binary_op)
+                throw std::runtime_error("Expected binary operator token");
+
+            if (binary_op->binary_operator_ == Binary_operators::operator_assign) {
+                
+            }
+        }
+    }
+
 }
 
 } // namespace language
