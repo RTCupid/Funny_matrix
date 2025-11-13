@@ -2,7 +2,7 @@
 #define FRONTEND_INCLUDE_BRIDGE_HPP
 
 // #include "parser.hpp"
-#include "lexer.hpp"
+// #include "lexer.hpp"
 
 // int yylex(yy::parser::semantic_type* yylval,
 //           yy::location*               yylloc,
