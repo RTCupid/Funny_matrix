@@ -86,7 +86,7 @@ statement      : assignment TOK_SEMICOLON
 
 block          : TOK_LEFT_BRACE stmt_list TOK_RIGHT_BRACE ;
 
-assignment     : TOK_ID TOK_ASSIGN expr 
+assignment     : TOK_ID TOK_ASSIGN expr
                ;
 
 input          : TOK_ID TOK_ASSIGN TOK_INPUT
