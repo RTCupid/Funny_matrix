@@ -9,27 +9,49 @@ void Program::graph_dump(std::ostream &gv, Node *parent) const {
        << "fillcolor=peachpuff, color=\"#252A34\", penwidth=2.5];\n"
        << "    bgcolor=\"lemonchiffon\";\n\n";
 
-    Node *left = stmts_.empty() ? nullptr : stmts_.front().get();
-    Node *right = stmts_.empty() ? nullptr : stmts_.back().get();
+    std::size_t size = stmts_.size();
 
     gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=salmon"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Program"
-       << " | addr: " << this << " | parent: " << nullptr << "| { left: " << left
-       << " | right: " << right << " } }\"" << "];\n";
+       << " | addr: " << this << " | parent: " << nullptr << "| { ";
+    for (std::size_t i = 0; i < size; ++i) {
+        gv << "stmt_" << i << ": " << stmts_[i].get();
+        if (i + 1 < size) {
+            gv << " | ";
+        }
+    }
+    gv << " } }\"" << "];\n";
+
 
     for (const auto &stmt : stmts_) {
-        gv << "    node_" << this << " -> node_" << stmt.get() << ";\n";
-        stmt->graph_dump(gv, (Node *)this);
+        if (stmt) {
+            gv << "    node_" << this << " -> node_" << stmt.get() << ";\n";
+            stmt->graph_dump(gv, (Node *)this);
+        }
     }
 
     gv << "\n}\n";
 }
 
 void Block_stmt::graph_dump(std::ostream &gv, Node *parent) const {
+    // gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightgoldenrod1"
+    //    << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Block_stmt"
+    //    << " | addr: " << this << " | parent: " << parent << "| size: " << stmts_.size() << " }\""
+    //    << "];\n";
+
+    std::size_t size = stmts_.size();
+
     gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightgoldenrod1"
-       << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Block_stmt"
-       << " | addr: " << this << " | parent: " << parent << "| size: " << stmts_.size() << " }\""
-       << "];\n";
+       << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Block"
+       << " | addr: " << this << " | parent: " << parent << "| { ";
+    for (std::size_t i = 0; i < size; ++i) {
+        gv << "stmt_" << i << ": " << stmts_[i].get();
+        if (i + 1 < size) {
+            gv << " | ";
+        }
+    }
+    gv << " } }\"" << "];\n";
+
 
     for (const auto &stmt : stmts_) {
         if (stmt) {
@@ -56,7 +78,7 @@ void Assignment_stmt::graph_dump(std::ostream &gv, Node *parent) const {
 }
 
 void While_stmt::graph_dump(std::ostream &gv, Node *parent) const {
-    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightsteelblue1"
+    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=turquoise"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ While"
        << " | addr: " << this << " | parent: " << parent << "| { left: " << condition_.get()
        << " | right: " << body_.get() << " } }\"" << "];\n";
@@ -72,7 +94,7 @@ void While_stmt::graph_dump(std::ostream &gv, Node *parent) const {
 }
 
 void If_stmt::graph_dump(std::ostream &gv, Node *parent) const {
-    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightgoldenrodyellow"
+    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=turquoise"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ If"
        << " | addr: " << this << " | parent: " << parent << "| { cond: " << condition_.get()
        << " | then: " << then_branch_.get() << " | else: " << else_branch_.get() << " } }\""
@@ -139,7 +161,7 @@ void Binary_operator::graph_dump(std::ostream &gv, Node *parent) const {
         break;
     }
 
-    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=powderblue"
+    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightsteelblue1"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Binary op"
        << " | addr: " << this << " | parent: " << parent << " | operator: " << op_str
        << " | { left: " << left_.get() << " | right: " << right_.get() << " } }\"" << "];\n";
@@ -165,7 +187,7 @@ void Unary_operator::graph_dump(std::ostream &gv, Node *parent) const {
         break;
     }
 
-    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=powderblue"
+    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightsteelblue1"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Unary op"
        << " | addr: " << this << " | parent: " << parent << "operator: " << op_str
        << "| operand: " << operand_.get() << " }\"" << "];\n";
@@ -191,7 +213,7 @@ void Variable::graph_dump(std::ostream &gv, Node *parent) const {
 }
 
 void Print_stmt::graph_dump(std::ostream &gv, Node *parent) const {
-    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=mistyrose1"
+    gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=darkorange"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Print"
        << " | addr: " << this << " | parent: " << parent << " | value: " << value_.get() << "}\""
        << "];\n";
