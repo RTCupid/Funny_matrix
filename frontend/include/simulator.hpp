@@ -31,8 +31,8 @@ class Simulator final : public ASTVisitor {
     void visit(Number &node) override;
     void visit(Variable &node) override;
 
-    private:
-    number_t evaluate_expression(Expression& expression);
+  private:
+    number_t evaluate_expression(Expression &expression);
 };
 
 } // namespace language

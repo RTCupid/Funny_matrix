@@ -7,11 +7,11 @@
 #include <memory>
 
 extern int yylex();
-yy::parser::semantic_type* yylval = nullptr;
+yy::parser::semantic_type *yylval = nullptr;
 
 int yyFlexLexer::yywrap() { return 1; }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     std::cout << "Run program\n";
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <program_file>\n";
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
     try {
         root->accept(simulator);
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "Runtime error: " << e.what() << "\n";
         return 1;
     }

@@ -6,10 +6,11 @@
 namespace language {
 
 class ExpressionEvaluator final : public ASTVisitor {
-private:
+  private:
     Simulator &simulator_;
     number_t result_{0};
-public:
+
+  public:
     ExpressionEvaluator(Simulator &simulator) : simulator_{simulator} {};
     ~ExpressionEvaluator() = default;
 
