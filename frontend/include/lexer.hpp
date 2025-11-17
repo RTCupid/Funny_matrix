@@ -3,6 +3,7 @@
 
 #include "parser.hpp"
 #include <iostream>
+#include <ostream>
 #include <string>
 
 #ifndef yyFlexLexer
@@ -15,6 +16,8 @@ class Lexer : public yyFlexLexer {
   public:
     std::string current_lexem;
     std::string current_value;
+
+    Lexer(std::istream *in, std::ostream *out) : yyFlexLexer(in, out) {}
 
     int process_if() {
         current_lexem = "conditional operator";
@@ -154,7 +157,7 @@ class Lexer : public yyFlexLexer {
         return yy::parser::token::TOK_NUMBER;
     }
 
-    using yyFlexLexer::yyFlexLexer;
+    // using yyFlexLexer::yyFlexLexer;
 
     int yylex() override;
 

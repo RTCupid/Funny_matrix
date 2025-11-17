@@ -5,6 +5,7 @@
 %{
   #include <string>
   #include <iostream>
+  #include <fstream>
   // #include "parser.hpp"
   #include "lexer.hpp"
 
@@ -66,4 +67,3 @@ NEWLINE  \n
 <<EOF>>         { return 0; }
 
 %%
-
