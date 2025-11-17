@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <fstream>
 
 namespace language {
 
@@ -27,28 +28,30 @@ class Input_stmt;
 class Binary_operator;
 class Unary_operator;
 
+
 // Visitor pattern for AST traversal
 class ASTVisitor {
   public:
-    virtual ~ASTVisitor() = default;
-
-    virtual void visit(Program &node) = 0;
-    virtual void visit(Block_stmt &node) = 0;
-    virtual void visit(Assignment_stmt &node) = 0;
-    virtual void visit(Input_stmt &node) = 0;
-    virtual void visit(If_stmt &node) = 0;
-    virtual void visit(While_stmt &node) = 0;
-    virtual void visit(Print_stmt &node) = 0;
-    virtual void visit(Binary_operator &node) = 0;
-    virtual void visit(Unary_operator &node) = 0;
-    virtual void visit(Number &node) = 0;
-    virtual void visit(Variable &node) = 0;
+  virtual ~ASTVisitor() = default;
+  
+  virtual void visit(Program &node) = 0;
+  virtual void visit(Block_stmt &node) = 0;
+  virtual void visit(Assignment_stmt &node) = 0;
+  virtual void visit(Input_stmt &node) = 0;
+  virtual void visit(If_stmt &node) = 0;
+  virtual void visit(While_stmt &node) = 0;
+  virtual void visit(Print_stmt &node) = 0;
+  virtual void visit(Binary_operator &node) = 0;
+  virtual void visit(Unary_operator &node) = 0;
+  virtual void visit(Number &node) = 0;
+  virtual void visit(Variable &node) = 0;
 };
 
 class Node {
   public:
     virtual ~Node() = default;
     virtual void accept(ASTVisitor &visitor) = 0;
+    virtual void graph_dump(std::ostream gv, Node* parent) const = 0; //TODO
 };
 
 enum class Binary_operators { Eq, Neq, Less, LessEq, Greater, GreaterEq, Add, Sub, Mul, Div };
@@ -74,6 +77,10 @@ class Program : public Node {
     StmtList &get_stmts() { return stmts_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Block_stmt : public Statement {
@@ -87,6 +94,10 @@ class Block_stmt : public Statement {
     StmtList &get_stmts() { return stmts_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Assignment_stmt : public Statement {
@@ -103,6 +114,10 @@ class Assignment_stmt : public Statement {
     const Expression &get_value() const { return *value_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class While_stmt : public Statement {
@@ -118,6 +133,10 @@ class While_stmt : public Statement {
     Statement &get_body() { return *body_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class If_stmt : public Statement {
@@ -138,6 +157,10 @@ class If_stmt : public Statement {
     const Statement *else_branch() const { return else_branch_.get(); }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Input_stmt : public Statement {
@@ -150,6 +173,10 @@ class Input_stmt : public Statement {
     const Variable_ptr &get_variable() const { return variable_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Print_stmt : public Statement {
@@ -163,6 +190,10 @@ class Print_stmt : public Statement {
     const Expression &get_value() const { return *value_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Binary_operator : public Expression {
@@ -182,6 +213,10 @@ class Binary_operator : public Expression {
     const Expression &get_right() const { return *right_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Unary_operator : public Expression {
@@ -198,6 +233,10 @@ class Unary_operator : public Expression {
     const Expression &get_operand() const { return *operand_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 class Number : public Expression {
@@ -210,6 +249,10 @@ class Number : public Expression {
     const number_t &get_value() const { return number_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+
+    }
 };
 
 class Variable : public Expression {
@@ -223,6 +266,10 @@ class Variable : public Expression {
     const std::string &get_name() const { return var_name_; }
 
     void accept(ASTVisitor &visitor) override { visitor.visit(*this); }
+
+    virtual void graph_dump(std::ostream gv, Node* parent) const override { // TODO
+        //NOTE code
+    }
 };
 
 } // namespace language

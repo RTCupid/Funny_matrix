@@ -46,5 +46,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // const auto statements = root->get_stmts();
+
+    // Simulator simulator;
+
+    // for (const auto & stmt : statements) {
+    //     stmt->accept(simulator);
+    // }
+
     return result;
 }
