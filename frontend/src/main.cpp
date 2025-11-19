@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     std::ofstream gv(gv_file);
     if (!gv) { // FIXME it is fast implementation for debug
         std::cerr << "unable to open gv file\n";
-        return 1;
+        return 0;
     }
     root->graph_dump(gv, nullptr);
 
@@ -65,5 +65,5 @@ int main(int argc, char *argv[]) {
     //     stmt->accept(simulator);
     // }
 
-    return result;
+    return 0;
 }
