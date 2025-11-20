@@ -1,0 +1,3 @@
+val = 10;
+val_1 = !val;
+print val_1;

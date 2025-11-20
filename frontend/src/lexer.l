@@ -36,6 +36,7 @@ NEWLINE  \n
 "print"         { return process_print(); }
 "?"             { return process_input(); }
 
+"!"             { return process_not(); }
 "=="            { return process_eq(); }
 "!="            { return process_not_eq(); }
 "<="            { return process_less_or_eq(); }
@@ -46,6 +47,7 @@ NEWLINE  \n
 "-"             { return process_minus(); }
 "*"             { return process_mul(); }
 "/"             { return process_div(); }
+"%"             { return process_rem_div(); }
 
 "<"             { return process_less(); }
 ">"             { return process_greater(); }

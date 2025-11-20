@@ -70,6 +70,10 @@ void ExpressionEvaluator::visit(Binary_operator &node) {
         result_ = left_value / right_value;
         break;
     }
+    case Binary_operators::RemDiv: {
+        result_ = left_value % right_value;
+        break;
+    }
     default:
         throw std::runtime_error("Unknown binary operator");
     }
@@ -79,12 +83,19 @@ void ExpressionEvaluator::visit(Unary_operator &node) {
     ExpressionEvaluator eval{simulator_};
     node.get_operand().accept(eval);
     auto value = eval.result_;
-
     switch (node.get_operator()) {
-    case Unary_operators::Neg:
+    case Unary_operators::Neg: {
         result_ = -(value);
-    case Unary_operators::Plus:
+        break;
+    }
+    case Unary_operators::Plus: {
         result_ = value;
+        break;
+    }
+    case Unary_operators::Not: {
+        result_ = !value;
+        break;
+    }
     default:
         throw std::runtime_error("Unknown unary operator");
     }

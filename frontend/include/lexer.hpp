@@ -68,6 +68,12 @@ class Lexer : public yyFlexLexer {
         return yy::parser::token::TOK_MUL;
     }
 
+    int process_rem_div() {
+        current_lexem = "binary operator";
+        current_value = "%";
+        return yy::parser::token::TOK_REM_DIV;
+    }
+
     int process_div() {
         current_lexem = "binary operator";
         current_value = "/";
@@ -114,6 +120,12 @@ class Lexer : public yyFlexLexer {
         current_lexem = "comparing operator";
         current_value = ">=";
         return yy::parser::token::TOK_GREATER_OR_EQ;
+    }
+
+    int process_not() {
+        current_lexem = "unary operator";
+        current_value = "!";
+        return yy::parser::token::TOK_NOT;
     }
 
     int process_left_paren() {

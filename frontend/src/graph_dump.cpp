@@ -152,6 +152,9 @@ void Binary_operator::graph_dump(std::ostream &gv, Node *parent) const {
     case Binary_operators::Div:
         op_str = "/";
         break;
+    case Binary_operators::RemDiv:
+        op_str = "%";
+        break;
     }
 
     gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightsteelblue1"
@@ -178,11 +181,14 @@ void Unary_operator::graph_dump(std::ostream &gv, Node *parent) const {
     case Unary_operators::Plus:
         op_str = "+";
         break;
+    case Unary_operators::Not:
+        op_str = "!";
+        break;
     }
 
     gv << "    node_" << this << "[shape=Mrecord; style=filled; fillcolor=lightsteelblue1"
        << "; color=\"#000000\"; " << "fontcolor=\"#000000\"; " << "label=\"{ Unary operator"
-       << " | addr: " << this << " | parent: " << parent << "operator: " << op_str
+       << " | addr: " << this << " | parent: " << parent << " | operator: " << op_str
        << "| operand: " << operand_.get() << " }\"" << "];\n";
 
     if (operand_) {

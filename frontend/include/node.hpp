@@ -53,9 +53,21 @@ class Node {
     virtual void graph_dump(std::ostream &gv, Node *parent) const = 0; // TODO
 };
 
-enum class Binary_operators { Eq, Neq, Less, LessEq, Greater, GreaterEq, Add, Sub, Mul, Div };
+enum class Binary_operators {
+    Eq,
+    Neq,
+    Less,
+    LessEq,
+    Greater,
+    GreaterEq,
+    Add,
+    Sub,
+    Mul,
+    Div,
+    RemDiv
+};
 
-enum class Unary_operators { Neg, Plus };
+enum class Unary_operators { Neg, Plus, Not };
 
 class Statement : public Node {};
 class Expression : public Node {};
